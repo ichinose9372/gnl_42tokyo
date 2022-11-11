@@ -3,53 +3,83 @@
 /*                                                        :::      ::::::::   */
 /*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichinoseyuuki <ichinoseyuuki@student.42    +#+  +:+       +#+        */
+/*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 11:37:36 by ichinoseyuu       #+#    #+#             */
-/*   Updated: 2022/11/07 21:21:21 by ichinoseyuu      ###   ########.fr       */
+/*   Updated: 2022/11/11 19:22:09 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"gnl.h"
 // char *get_next_line(int fd);
 
-void	func(char *buff, char *save)
+char	*get_next_line(int fd)
 {
-	char	*tmp;
-	size_t	n;
-
-	tmp = malloc(BUFFER_SIZE);
-	if (!tmp)
-		return ;
-	tmp = ft_strchr(buff, '\n');
-	n = ft_strlen(tmp);
-	save = ft_substr(tmp, 1, n - 1);
-	buff = ft_strtrim(buff, tmp);
-}
-
-char	*readbuff(int fd)
-{
+	char		*buf;
 	static char	*save;
-	char		*buff;
+	char		*p_b;
 	char		*line;
-	ssize_t		n;
+	size_t		len;
+	char		*tmp;
 
-	*line = 0;
 	if (fd < 0)
 		return (NULL);
-	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buff)
-		return (0);
-	while ((n = read(fd, buff, BUFFER_SIZE)) > 0)
+	buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buf)
+		return (NULL);
+	if (save)
 	{
-		if (ft_strchr(buff, '\n'))
+		if (save[0] == '\n')
 		{
-			func(buff, save);
-			line = ft_strjoin(buff, line);
+			line = malloc(1);
+			*line = '\0';
+			save = ft_strdup(save + 1);
+			return (line);
+		}
+		else if (ft_strchr(save, '\n'))
+		{
+			p_b = ft_strchr(save, '\n');
+			*p_b = '\0';
+			line = ft_substr(save, 0, (&p_b - &save));
+			save = ft_strdup((p_b + 1));
+			return (line);
+		}
+	}
+	len = 1;
+	while (len > 0 && fd)
+	{
+		len = read(fd, buf, BUFFER_SIZE);
+		p_b = ft_strchr(buf, '\n');
+		if (p_b)
+		{
+			*p_b = '\0';
+			line = ft_strdup(buf);
+			if (save)
+				line = ft_strjoin(save, line);
+			save = ft_strdup((p_b + 1));
 			break ;
 		}
 		else
-			line = ft_strjoin(buff, line);
+		{
+			if (!save)
+			{
+				save = ft_strdup(buf);
+			}
+			else
+			{
+				tmp = ft_strdup(buf);
+				save = ft_strjoin(save, tmp);
+				free(tmp);
+			}
+		}
+	}
+	if (len == 0)
+	{
+		free(buf);
+		free(save);
+		free(line);
+		line = malloc(1);
+		*line = 0;
 	}
 	return (line);
 }
@@ -57,21 +87,18 @@ char	*readbuff(int fd)
 int	main(void)
 {
 	int		fd;
+	int		i;
 	char	*save;
+
 	fd = open("code.txt", O_RDONLY);
-	save = malloc(100);
-	save = readbuff(fd);
-	// nakami = readbuff(fd);
-	// hozon = nakami;
-	// nakami = readbuff(fd);
-	// hozon = ft_strjoin(hozon, nakami);
-	// nakami = readbuff(fd);
-	// save = ft_strchr(nakami, '\n');
-	// save++;
-	// nakami = ft_strtrim(nakami, save);
-	// hozon = ft_strjoin(hozon, nakami);
-	// printf("%s", hozon);
-	printf("%s\n", save);
+	save = malloc(sizeof(char) * 10000);
+	i = 1;
+	// while (i < 30)
+	// {
+		save = get_next_line(fd);
+		printf("%s\n",save);
+		// i++;
+	// }
 	free(save);
 	close(fd);
 	return (0);

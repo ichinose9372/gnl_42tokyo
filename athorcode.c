@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   athorcode.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichinoseyuuki <ichinoseyuuki@student.42    +#+  +:+       +#+        */
+/*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 18:14:41 by ichinoseyuu       #+#    #+#             */
-/*   Updated: 2022/11/07 21:10:29 by ichinoseyuu      ###   ########.fr       */
+/*   Updated: 2022/11/11 16:08:46 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,20 +106,4 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	}
 	*str = 0;
 	return (str_new);
-}
-
-char	*ft_strtrim(char const *s1, char const *set)
-{
-	char	*n_s;
-	size_t	s_size;
-
-	if (!s1 || !set)
-		return (NULL);
-	while (*s1 != 0 && ft_strchr(set,*s1))
-		s1++;
-	s_size = ft_strlen(s1);
-	while (s_size > 0 && ft_strchr(set, s1[s_size]))
-		s_size--;
-	n_s = ft_substr((char *)s1, 0, s_size + 1);
-	return (n_s);
 }
