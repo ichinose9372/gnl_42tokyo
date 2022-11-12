@@ -6,12 +6,20 @@
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 11:37:36 by ichinoseyuu       #+#    #+#             */
-/*   Updated: 2022/11/11 19:22:09 by yichinos         ###   ########.fr       */
+/*   Updated: 2022/11/12 15:23:15 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"gnl.h"
 // char *get_next_line(int fd);
+void	ft_all_free(char *buf, char *line, char *save)
+{
+	free(buf);
+	free(save);
+	free(line);
+	line = NULL;
+}
+
 
 char	*get_next_line(int fd)
 {
@@ -49,6 +57,7 @@ char	*get_next_line(int fd)
 	while (len > 0 && fd)
 	{
 		len = read(fd, buf, BUFFER_SIZE);
+		buf[len] = '\0';
 		p_b = ft_strchr(buf, '\n');
 		if (p_b)
 		{
@@ -62,25 +71,13 @@ char	*get_next_line(int fd)
 		else
 		{
 			if (!save)
-			{
 				save = ft_strdup(buf);
-			}
 			else
-			{
-				tmp = ft_strdup(buf);
-				save = ft_strjoin(save, tmp);
-				free(tmp);
-			}
+				save = ft_strjoin(save, buf);
 		}
 	}
-	if (len == 0)
-	{
-		free(buf);
-		free(save);
-		free(line);
-		line = malloc(1);
-		*line = 0;
-	}
+	if ((len == 0) || (fd < 0))
+		ft_all_free(buf, line, save);
 	return (line);
 }
 
@@ -91,15 +88,14 @@ int	main(void)
 	char	*save;
 
 	fd = open("code.txt", O_RDONLY);
-	save = malloc(sizeof(char) * 10000);
 	i = 1;
-	// while (i < 30)
-	// {
+	while (i < 30)
+	{
 		save = get_next_line(fd);
-		printf("%s\n",save);
-		// i++;
-	// }
-	free(save);
+		printf("%s\n", save);
+		free(save);
+		i++;
+	}
 	close(fd);
 	return (0);
 }
