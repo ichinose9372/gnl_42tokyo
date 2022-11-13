@@ -6,12 +6,16 @@
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 18:16:16 by ichinoseyuu       #+#    #+#             */
-/*   Updated: 2022/11/11 16:55:36 by yichinos         ###   ########.fr       */
+/*   Updated: 2022/11/12 13:18:31 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GNL_H
 # define GNL_H
+
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 1
+#endif
 
 # include <stdio.h>
 # include <unistd.h>

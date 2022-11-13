@@ -6,7 +6,7 @@
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 11:37:36 by ichinoseyuu       #+#    #+#             */
-/*   Updated: 2022/11/12 15:23:15 by yichinos         ###   ########.fr       */
+/*   Updated: 2022/11/13 16:00:19 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	ft_all_free(char *buf, char *line, char *save)
 	line = NULL;
 }
 
-
 char	*get_next_line(int fd)
 {
 	char		*buf;
@@ -28,7 +27,6 @@ char	*get_next_line(int fd)
 	char		*p_b;
 	char		*line;
 	size_t		len;
-	char		*tmp;
 
 	if (fd < 0)
 		return (NULL);
@@ -54,7 +52,7 @@ char	*get_next_line(int fd)
 		}
 	}
 	len = 1;
-	while (len > 0 && fd)
+	while (len > 0 && fd && BUFFER_SIZE > -1)
 	{
 		len = read(fd, buf, BUFFER_SIZE);
 		buf[len] = '\0';
