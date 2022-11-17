@@ -6,25 +6,25 @@
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 18:37:38 by ichinoseyuu       #+#    #+#             */
-/*   Updated: 2022/11/13 17:17:15 by yichinos         ###   ########.fr       */
+/*   Updated: 2022/11/17 13:56:42 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"gnl.h"
-
-// void	ft_all_free(char *line, char *save)
-// {
-// 	free(save);
-// 	free(line);
-// 	*line = '\0';
-// }
+#include"get_next_line.h"
 
 char	*re_creat_save(char *save)
 {
-	while (*save != '\n' || *save != '\0')
-		save++;
-	save = ft_strdup((save + 1));
-	return (save);
+	char	*pointer_save;
+	char	*tmp;
+
+	if (save && *save == '\0')
+		return (NULL);
+	pointer_save = ft_strchr(save, '\n');
+	if (pointer_save == NULL)
+		return (NULL);
+	else
+		tmp = ft_strdup((pointer_save + 1));
+	return (tmp);
 }
 
 char	*create_line(char *save)
@@ -32,87 +32,113 @@ char	*create_line(char *save)
 	char	*line;
 	size_t	len;
 
-	len = ft_strlen(save);
-	line = malloc(sizeof(char) * (len + 1));
-	if (!line)
+	len = 0;
+	if (*save == 0)
 		return (NULL);
-	if (save == '\0')
+	while (save[len] != '\n' && save[len] != '\0')
+		len++;
+	line = malloc(sizeof(char) * (len + 2));
+	if (line == NULL)
 		return (NULL);
-	while (*save != '\0')
+	len = 0;
+	while (save[len] != '\n' && save[len] != '\0')
 	{
-		*line = *save;
-		line++;
-		save++;
+		line[len] = save[len];
+		len++;
 	}
-	*line = '\0';
+	if (save[len] == '\n')
+	{
+		line[len] = save[len];
+		len++;
+	}
+	line[len] = '\0';
 	return (line);
 }
 
-char	*read_txt(int fd, char *line)
+int	read_txt(int fd, char **save)
 {
 	ssize_t	len;
 	char	*buf;
+	char	*tmp;
 
 	buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buf)
-		return (NULL);
+		return (0);
 	len = 1;
-	while (len > 0 && !ft_strchr(buf, '\n'))
+	while (len > 0 && !ft_strchr(*save, '\n'))
 	{
 		len = read(fd, buf, BUFFER_SIZE);
 		if (len == -1)
 		{
 			free(buf);
-			return (NULL);
+			free(*save);
+			return (0);
 		}
 		buf[len] = '\0';
-		line = ft_strjoin(line, buf);
+		tmp = ft_strjoin(*save, buf);
+		free(*save);
+		*save = tmp;
 	}
 	free(buf);
-	return (line);
+	return (1);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*save;
 	char		*line;
-	char		*p_b;
+	char		*tmp;
+	int			num;
 
-
-	if (fd < 0 && BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	line = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!line)
+	if (save == NULL)
+	{
+		save = malloc(sizeof(char) * 1);
+		*save = '\0';
+	}
+	num = read_txt(fd, &save);
+	if (!num)
 		return (NULL);
-	if (save)
-		save = ft_strjoin(save, (p_b = read_txt(fd, line)));
-	else
-		save = read_txt(fd, line);
 	line = create_line(save);
-	// save = re_creat_save(save);
+	tmp = re_creat_save(save);
+	free(save);
+	save = tmp;
 	return (line);
 }
 
+// int	main(void)
+// {
+// 	int		fd;
+// 	int		i;
+// 	char	*save;
 
-
-
-
-
-	int	main(void)
-{
-	int		fd;
-	int		i;
-	char	*save;
-
-	fd = open("code.txt", O_RDONLY);
-	i = 1;
-	while (i < 30)
-	{
-		save = get_next_line(fd);
-		printf("%s\n", save);
-		free(save);
-		i++;
-	}
-	close(fd);
-	return (0);
-}
+// 	fd = open("code.txt", O_RDONLY);
+// 	i = 1;
+// 	// while (i < 30)
+// 	// {
+// 		// printf("*********** %d **************\n", i);
+// 		save = get_next_line(fd);
+// 		printf("%s", save);
+// 		free(save);
+// 		save = get_next_line(fd);
+// 		printf("%s", save);
+// 		free(save);
+// 		save = get_next_line(fd);
+// 		printf("%s", save);
+// 		free(save);
+// 		save = get_next_line(fd);
+// 		printf("%s", save);
+// 		free(save);
+// 		save = get_next_line(fd);
+// 		printf("%s", save);
+// 		free(save);
+// 		save = get_next_line(fd);
+// 		printf("%s", save);
+// 		free(save);
+// 	// 	i++;
+// 	// }
+// 	close(fd);
+// 	// system("leaks -q a.out");
+// 	return (0);
+// }
