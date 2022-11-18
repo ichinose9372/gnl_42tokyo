@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   athorcode.c                                        :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/06 18:14:41 by ichinoseyuu       #+#    #+#             */
-/*   Updated: 2022/11/12 14:39:52 by yichinos         ###   ########.fr       */
+/*   Created: 2022/11/18 16:16:21 by yichinos          #+#    #+#             */
+/*   Updated: 2022/11/18 16:16:44 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"gnl.h"
+#include"get_next_line_bonus.h"
 
 size_t	ft_strlen(const char	*str)
 {
@@ -58,29 +58,6 @@ char	*ft_strdup(const char *s1)
 	return (p_s1);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	char	*new_s;
-	size_t	i;
-
-	if (*s == '\0' || len <= 0 || start >= ft_strlen(s))
-		return (ft_strdup(""));
-	if (len > ft_strlen(s) - start)
-		len = ft_strlen(s) - start;
-	new_s = (char *)malloc(sizeof(char) * (len + 1));
-	if (new_s == 0)
-		return (0);
-	i = 0;
-	while (len > i && s[start] != 0)
-	{
-		new_s[i] = s[start];
-		start++;
-		i++;
-	}
-	new_s[i] = '\0';
-	return (new_s);
-}
-
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	size_t	len;
@@ -90,7 +67,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	len = ft_strlen(s1) + ft_strlen(s2);
 	str = (char *)malloc(len + 1);
 	if (str == 0)
-		return (0);
+		return (NULL);
 	str_new = str;
 	while (*s1 != 0)
 	{
@@ -104,6 +81,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		str++;
 		s2++;
 	}
-	*str = 0;
+	*str = '\0';
 	return (str_new);
 }

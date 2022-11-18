@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/12 18:37:38 by ichinoseyuu       #+#    #+#             */
-/*   Updated: 2022/11/18 16:36:14 by yichinos         ###   ########.fr       */
+/*   Created: 2022/11/17 14:33:00 by yichinos          #+#    #+#             */
+/*   Updated: 2022/11/18 18:20:01 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"get_next_line.h"
+#include"get_next_line_bonus.h"
+#include<stdio.h>
 
 char	*re_creat_save(char *save)
 {
@@ -85,64 +86,48 @@ int	read_txt(int fd, char **save)
 
 char	*get_next_line(int fd)
 {
-	static char	*save;
+	static char	*save[256];
 	char		*line;
 	char		*tmp;
 	int			num;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (save == NULL)
+	if (save[fd] == NULL)
 	{
-		save = malloc(sizeof(char) * 1);
-		*save = '\0';
+		save[fd] = malloc(sizeof(char) * 1);
+		save[fd][0] = '\0';
 	}
-	num = read_txt(fd, &save);
+	num = read_txt(fd, &save[fd]);
 	if (!num)
 		return (NULL);
-	line = create_line(save);
-	tmp = re_creat_save(save);
-	free(save);
-	save = tmp;
+	line = create_line(save[fd]);
+	tmp = re_creat_save(save[fd]);
+	free(save[fd]);
+	save[fd] = tmp;
 	return (line);
 }
-
-//  #include<stdio.h>
 
 //  int	main(void)
 //  {
 // 	int		fd;
 //  	int		i;
-// 	  	char	*save;
-
-// 	fd = open("code.txt", O_RDONLY);
+// 	char	*save;
+// 	fd = open("test.txt", O_RDONLY);
 // 	i = 1;
-// 	// while (i < 30)
-// 	// {
-// 		// printf("*********** %d **************\n", i);
-// 		save = get_next_line(2);
-// 		printf("%s", save);
-// 		free(save);
+// 	while (i < 2)
+// 	{
+// 		printf("*********** %d **************\n", i);
 // 		save = get_next_line(fd);
 // 		printf("%s", save);
 // 		free(save);
-// 		save = get_next_line(fd);
-// 		printf("%s", save);
-// 		free(save);
-// 		save = get_next_line(fd);
-// 		printf("%s", save);
-// 		free(save);
-// 		save = get_next_line(fd);
-// 		printf("%s", save);
-// 		free(save);
-// 		save = get_next_line(fd);
-// 		printf("%s", save);
-// 		free(save);
-// 	// 	i++;
-// 	// }
+// 		// fd = open("test1.txt", O_RDONLY);
+// 		// save = get_next_line(fd);
+// 		// printf("%s", save);
+// 		// free(save);
+// 		i++;
+// 	}
 // 	close(fd);
 // 	system("leaks -q a.out");
 // 	return (0);
 // }
-
-
