@@ -6,11 +6,18 @@
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 18:37:38 by ichinoseyuu       #+#    #+#             */
-/*   Updated: 2022/11/18 16:36:14 by yichinos         ###   ########.fr       */
+/*   Updated: 2022/11/19 10:26:58 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"get_next_line.h"
+
+int	ft_free(char	*str)
+{
+	free(str);
+	str = NULL;
+	return (0);
+}
 
 char	*re_creat_save(char *save)
 {
@@ -145,4 +152,30 @@ char	*get_next_line(int fd)
 // 	return (0);
 // }
 
+// #include<stdio.h>
 
+// int	main(void)
+//  {
+// 	int		fd;
+// 	int		fd2;
+//  	int		i;
+// 	char	*save;
+// 	i = 1;
+// 	fd = open("test.txt", O_RDONLY);
+// 	fd2 = open("test1.txt", O_RDONLY);
+// 	while (i < 4)
+// 	{
+// 		printf("*********** %d **************\n", i);
+// 		save = get_next_line(fd);
+// 		printf("%s", save);
+// 		free(save);
+// 		save = get_next_line(fd2);
+// 		printf("%s", save);
+// 		free(save);
+// 		i++;
+// 	}
+// 	close(fd);
+// 	close(fd2);
+// 	system("leaks -q a.out");
+// 	return (0);
+// }

@@ -6,12 +6,11 @@
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:33:00 by yichinos          #+#    #+#             */
-/*   Updated: 2022/11/18 18:20:01 by yichinos         ###   ########.fr       */
+/*   Updated: 2022/11/19 10:43:34 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"get_next_line_bonus.h"
-#include<stdio.h>
 
 char	*re_creat_save(char *save)
 {
@@ -91,7 +90,7 @@ char	*get_next_line(int fd)
 	char		*tmp;
 	int			num;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (0 > fd || fd > 256 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (save[fd] == NULL)
 	{
@@ -108,26 +107,37 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
+// #include<stdio.h>
+
 //  int	main(void)
 //  {
 // 	int		fd;
+// 	int		fd2;
+// 	int		fd3;
 //  	int		i;
 // 	char	*save;
-// 	fd = open("test.txt", O_RDONLY);
 // 	i = 1;
-// 	while (i < 2)
+// 	fd = open("test.txt", O_RDONLY);
+// 	fd2 = open("test1.txt", O_RDONLY);
+// 	fd3 = open("code.txt", O_RDONLY);
+// 	while (i < 4)
 // 	{
+
 // 		printf("*********** %d **************\n", i);
 // 		save = get_next_line(fd);
 // 		printf("%s", save);
 // 		free(save);
-// 		// fd = open("test1.txt", O_RDONLY);
-// 		// save = get_next_line(fd);
-// 		// printf("%s", save);
-// 		// free(save);
+// 		save = get_next_line(fd2);
+// 		printf("%s", save);
+// 		free(save);
+// 		save = get_next_line(fd3);
+// 		printf("%s", save);
+// 		free(save);
 // 		i++;
 // 	}
 // 	close(fd);
+// 	close(fd2);
+// 	close(fd3);
 // 	system("leaks -q a.out");
 // 	return (0);
 // }
