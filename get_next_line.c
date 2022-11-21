@@ -6,18 +6,11 @@
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 18:37:38 by ichinoseyuu       #+#    #+#             */
-/*   Updated: 2022/11/19 10:26:58 by yichinos         ###   ########.fr       */
+/*   Updated: 2022/11/21 12:24:26 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"get_next_line.h"
-
-int	ft_free(char	*str)
-{
-	free(str);
-	str = NULL;
-	return (0);
-}
 
 char	*re_creat_save(char *save)
 {
