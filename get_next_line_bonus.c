@@ -6,7 +6,7 @@
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:33:00 by yichinos          #+#    #+#             */
-/*   Updated: 2022/11/27 12:44:27 by yichinos         ###   ########.fr       */
+/*   Updated: 2022/11/28 15:42:35 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,10 @@ int	read_txt(int fd, char **save)
 		buf[len] = '\0';
 		tmp = ft_strjoin(*save, buf);
 		if (!tmp)
+		{
+			ft_all_free(*save,buf);
 			return (0);
+		}
 		free(*save);
 		*save = tmp;
 	}
